@@ -1,0 +1,59 @@
+1.  What's a RubyGem and why would you use one?
+
+      A RubyGem is a program that is used to extend or modify Ruby applications. This
+      allows gem creators to share with other developers, who can use the gem without
+      having to develop that functionality themselves.
+
+2.  What's the difference between lazy and eager loading?
+
+      Lazy loading is when a calculation is only done when called.  Eager loading is when
+      the calculation is done when initialized.
+
+3.  What's the difference between the CREATE TABLE and INSERT INTO SQL statements?
+
+      CREATE TABLE makes an entire table.  INSERT INTO is used to add rows into the table.
+
+4.  What's the difference between extend and include? When would you use one or the other?
+
+      Extend adds a module's methods to the target class. Extend is a public method.
+      Include adds the module's methods as instance methods to the target class, which allows
+      the methods to be used in class instances. Include is a private method.
+
+5.  In persistence.rb, why do the save methods need to be instance (vs. class) methods?
+
+      The save methods need to be instance methods because an instance of the class is being
+      saved when a user creates or modifies an entry.
+
+6.  Given the Jar-Jar Binks example earlier, what is the final SQL query in persistence.rb's
+    save! method?
+
+      UPDATE character
+      SET character_name = "Jar-Jar Binks", star_rating = 1
+      WHERE id = 1
+
+7.  AddressBook's entries instance variable no longer returns anything. We'll fix this in a
+    later checkpoint. What changes will we need to make?
+
+      AddressBook needs to relate to an Entry.
+
+8.  Write a Ruby method that converts snake_case to CamelCase using regular expressions (you
+    can test them on Rubular). Send your code in the submission tab.
+
+      def camel(snake)
+        snake = snake.capitalize
+        snake.gsub!(/(_)([a-z\d])/,&:upcase)
+        snake.tr!("_", "")
+      end
+
+9.  Add a select method which takes an attribute and value and searches for all records that match:
+
+      def find_by(attribute, value)
+        rows = connection.execute <<-SQL
+        SELECT #{columns.join ","}
+        FROM #{table}
+        WHERE #{attribute} = #{value}
+      SQL
+
+      data = Hash[columns.zip(rows)]
+      new(data)
+    end
