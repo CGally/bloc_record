@@ -20,7 +20,7 @@ module BlocRecord
         "null"
       end
     end
-    
+
     def convert_keys(options)
       options.keys.each {|k| options[k.to_s] = options.delete(k) if k.kind_of?(Symbol)}
       options
@@ -32,7 +32,7 @@ module BlocRecord
 
 
     def reload_obj(dirty_obj)
-      persisted_obj = dirty_obj.class.find(dirty_obj.id)
+      persisted_obj = dirty_obj.class.find_one(dirty_obj.id)
       dirty_obj.instance_variables.each do |instance_variable|
         dirty_obj.instance_variable_set(instance_variable, persisted_obj.instance_variable_get(instance_variable))
       end
