@@ -57,3 +57,23 @@
       data = Hash[columns.zip(rows)]
       new(data)
     end
+
+
+CHECKPOINT 4
+
+1. Write a SQL query using the professor / department / compensation data that outputs the average
+   number of vacation days by department:
+
+      SELECT department.department_name, AVG(compensation.vacation_days)
+      FROM department
+      JOIN compensation
+      ON professor.id = compensation.professor_id
+      JOIN professor
+      ON department.id = professor.department_id
+      GROUP by department.department_name
+      ORDER by AVG(compensation.vacation_days) ASC;
+
+      Transfiguration                  2.0
+      Study of Ancient Runes           8.0
+      Defence Against the Dark Arts    9.0
+      Care of Magical Creatures        13.0
