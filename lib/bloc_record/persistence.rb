@@ -37,6 +37,10 @@ module Persistence
     self.class.update(self.id, updates)
   end
 
+  def destroy
+    self.class.destroy(self.id)
+  end
+
   def method_missing(m, *args, &block)
     if m[0..] == "update_"
       attribute = m[7..m.length-1]
@@ -86,6 +90,43 @@ module Persistence
         SET #{updates_array * ","} #{where_clause}
       SQL
 
+      true
+    end
+
+    def destroy_all(params=nil)
+      if params && !params.empty?
+        case params
+        when Hash
+          params = BlocRecord::Utility.convert_keys(params)
+          conditions = params.map {|key, value| "#{key}=#{BlocRecord::Utility.sql_strings(value)}"}.join(" and ")
+        when String
+          conditions = params
+        when Array
+          conditions = params.join("\nOR ")
+        end
+        connection.execute <<-SQL
+          DELETE FROM #{table}
+          WHERE #{conditions};
+        SQL
+      else
+        connection.execute <<-SQL
+          DELETE FROM #{table};
+        SQL
+      end
+      true
+    end
+
+  end
+
+    def destroy(*id)
+      if id.length > 1
+        where_clause = "WHERE id IN (#{id.join(",")});"
+      else
+        where_clause = "WHERE id = #{id.first};"
+      end
+      connection.execute <<-SQL
+        DELETE FROM #{table} #{where_clause}
+      SQL
       true
     end
   end

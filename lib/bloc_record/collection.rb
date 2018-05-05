@@ -24,5 +24,11 @@ module BlocRecord
         item if item[arg.key] != arg.value
       end
     end
+
+    def destroy_all
+      self.each do |item|
+        item.destroy
+      end
+    end
   end
 end
