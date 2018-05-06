@@ -42,7 +42,7 @@ module Persistence
   end
 
   def method_missing(m, *args, &block)
-    if m[0..] == "update_"
+    if m[0..6] == "update_"
       attribute = m[7..m.length-1]
       find_by(attribute, args[0])
     else
@@ -81,6 +81,7 @@ module Persistence
           where_clause = ";"
         else
           where_clause = "WHERE id IN (#{ids.join(",")});"
+        end
       else
         where_clause = ";"
       end
@@ -115,8 +116,6 @@ module Persistence
       end
       true
     end
-
-  end
 
     def destroy(*id)
       if id.length > 1
