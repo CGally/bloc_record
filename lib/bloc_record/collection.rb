@@ -8,7 +8,7 @@ module BlocRecord
     def take(num=1)
       col = BlocRecord::Collection.new
       num.times do
-        new_collection << self.shift
+        col << self.shift
       end
       col
     end
